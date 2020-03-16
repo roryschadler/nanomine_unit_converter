@@ -4,7 +4,7 @@ CurrentDensity=amperePerSquareMeter
 Density=gramPerCubicCentimetre=molePerCubicmetre
 Depth=nanometre
 ElectricConductivity=siemensPerMetre
-ElongationAtBreak=megapascal=percent
+ElongationAtBreak=percent
 ElongationAtYield=percent
 FiberTensileElongation
 FiberTensileStrength=voltPerMetre=megapascal
