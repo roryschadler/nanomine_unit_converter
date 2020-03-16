@@ -11,9 +11,9 @@ from .nanomine_kg_parser import (attr_value,
                                 add_new_meas)
 
 # dictionaries for conversion between units
-convertible_units = read_dictionary("agents/dicts/nanomine_dictionary.txt")
-ontology_to_pint_dict = read_dictionary("agents/dicts/ontology_units_to_pint_dictionary.txt")
-unit_to_pint_dict = read_dictionary("agents/dicts/old_unit_to_pint.txt")
+convertible_units = read_dictionary("agents/converter/ontology_dicts/nanomine_dictionary.txt")
+ontology_to_pint_dict = read_dictionary("agents/converter/ontology_dicts/ontology_units_to_pint_dictionary.txt")
+unit_to_pint_dict = read_dictionary("agents/converter/ontology_dicts/old_unit_to_pint.txt")
 
 def convert_and_add_measurements(kg):
     """ Takes Nanomine KG sample and adds measurement conversions to all units.
@@ -22,9 +22,9 @@ def convert_and_add_measurements(kg):
     """
     attributes = get_meas_attrs(kg)
     for attr in attributes:
-        add_new_meas(kg, calculate_converted_units(kg, attr))
+        add_new_meas(kg, calculate_converted_units(attr))
 
-def calculate_converted_units(kg, attr):
+def calculate_converted_units(attr):
     """ Calculate unit conversions if passed a convertible attribute."""
     if is_a_convertible_unit_attr(attr):
         # pull important values off attribute
@@ -55,7 +55,7 @@ def calculate_converted_units(kg, attr):
                                                        possible_units)
         converted = []
         for new_unit, new_val in converted_meas_tuples:
-            converted.append(measurement_attribute(kg, om_unit_to_uri(new_unit),
+            converted.append(measurement_attribute(om_unit_to_uri(new_unit),
                                                    new_val,
                                                    meas_type_URI))
         return converted
