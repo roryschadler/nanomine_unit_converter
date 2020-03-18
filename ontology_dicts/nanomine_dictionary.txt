@@ -7,7 +7,7 @@ ElectricConductivity=siemensPerMetre
 ElongationAtBreak=percent
 ElongationAtYield=percent
 FiberTensileElongation
-FiberTensileStrength=voltPerMetre=megapascal
+FiberTensileStrength=megapascal
 FlexuralModulus=gigapascal
 FlexuralStressAtBreak=megapascal
 GlassTransitionTemperature=CelsiusTemperature=Kelvin=FahrenheitTemperature

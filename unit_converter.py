@@ -32,6 +32,9 @@ def calculate_converted_units(attr):
         meas_type_URI = attr_type_URI(attr)
         unit_URI = attr_unit(attr)
         meas_value = attr_value(attr)
+        if (meas_type is None or meas_type_URI is None
+            or unit_URI is None or meas_value is None):
+            return []
         possible_units = []
 
         # get pint-friendly unit names
@@ -55,7 +58,8 @@ def calculate_converted_units(attr):
                                                        possible_units)
         converted = []
         for new_unit, new_val in converted_meas_tuples:
-            converted.append(measurement_attribute(om_unit_to_uri(new_unit),
+            if new_unit is not None and new_val is not None:
+                converted.append(measurement_attribute(om_unit_to_uri(new_unit),
                                                    new_val,
                                                    meas_type_URI))
         return converted

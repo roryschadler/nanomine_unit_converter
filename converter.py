@@ -13,21 +13,24 @@ class UnitConverter(autonomic.UpdateChangeService):
     activity_class = whyis.UnitConverter
 
     def getInputClass(self):
+        # TODO could be anything sio:Entity
         return URIRef("http://nanomine.org/ns/PolymerNanocomposite")
 
     def getOutputClass(self):
+        # TODO StandardizedConversionEntity
         return URIRef("http://nanomine.org/ns/PolymerNanocomposite")
 
     def get_query(self):
-        uri = "http://nanomine.org/sample/e116-s29-prasad-2018"
+        # TODO may not need?
+        # Add provenance from original property
+
+        # This line should be added once ReportedProperty is added to the Knowledge Graph
+        # FILTER EXISTS {{ ?a <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://nanomine.org/nm/ReportedProperty> }} .
         query = '''SELECT DISTINCT ?s WHERE {{
-    _:doi <http://semanticscience.org/resource/hasPart> ?s .
     ?s <http://semanticscience.org/resource/hasAttribute> ?a . 
     ?a <http://semanticscience.org/resource/hasUnit> []; 
        <http://semanticscience.org/resource/hasValue> [] .
-    FILTER( ?s NOT IN(<{0}>) ) .
-    FILTER NOT EXISTS {{ ?a <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://nanomine.org/nm/ConvertedUnit> }} .
-}}'''.format(uri)
+}} LIMIT 10'''
         return query
 
     def process(self, i, o):
