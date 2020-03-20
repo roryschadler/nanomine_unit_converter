@@ -1,0 +1,14 @@
+{
+  "@id": "http://example.com/parser_test",
+  "@type": [
+    "http://nanomine.org/ns/PolymerNanocomposite"
+  ],
+  "http://semanticscience.org/resource/hasAttribute": [
+    {
+      "@id": "bnode:14626f9a927b4e7a980f802676b42402",
+      "@type": [
+        "http://nanomine.org/ns/AC_DielectricDispersion"
+      ]
+    }
+  ]
+}
