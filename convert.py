@@ -29,8 +29,8 @@ def convert(value, from_unit, to_unit):
               " is not defined.".format(from_unit, to_unit))
         return None
     except DimensionalityError as exc:
-        print("The attempted unit conversion from"\
-              " {} to {} is not possible.".format(from_unit, to_unit))
+        #print("The attempted unit conversion from"\
+        #      " {} to {} is not possible.".format(from_unit, to_unit))
         return None
     else:
         converted_val = round_sig(converted.m,
