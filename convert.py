@@ -6,7 +6,11 @@ from pint import UnitRegistry, UndefinedUnitError, DimensionalityError
 import re
 from math import log10, floor
 
-Q_ = UnitRegistry().Quantity
+ureg = UnitRegistry()
+Q_ = ureg.Quantity
+
+def load_user_definitions(user_defs):
+    ureg.load_definitions(user_defs)
 
 def convert_to_other_units(meas_unit, meas_val, new_units):
     converted = []

@@ -2,7 +2,7 @@
 
 from numbers import Real
 
-from .convert import convert_to_other_units
+from .convert import convert_to_other_units, load_user_definitions
 from .dictionary import read_dictionary
 from .nanomine_kg_parser import (attr_value,
                                 attr_type,
@@ -16,6 +16,10 @@ from .nanomine_kg_parser import (attr_value,
 convertible_units = read_dictionary("agents/converter/ontology_dicts/nanomine_dictionary.txt")
 ontology_to_pint_dict = read_dictionary("agents/converter/ontology_dicts/ontology_units_to_pint_dictionary.txt")
 unit_to_pint_dict = read_dictionary("agents/converter/ontology_dicts/old_unit_to_pint.txt")
+
+# new dictionaries for unit conversion
+translations = read_dictionary("agents/converter/dicts/translations.txt")
+load_user_definitions("agents/converter/dicts/pint_defs.txt")
 
 def convert_and_add_measurements(kg):
     """ Takes Nanomine KG sample and adds measurement conversions to all units.
