@@ -1,6 +1,4 @@
-""" Reads and returns Nanomine Unit Dictionary.
-    more to go here
-"""
+""" Reads and returns Nanomine Unit Dictionary."""
 
 def read_dictionary(filename):
     d = {}

@@ -1,3 +1,5 @@
+""" Unit Conversion Agent for Nanomine Knowledge Graph"""
+
 from __future__ import division
 from past.utils import old_div
 import nltk, re, pprint
