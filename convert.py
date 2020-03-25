@@ -49,16 +49,3 @@ def number_of_significant_figures(num):
         num_parts = re.split(r'[\.eE]', str(num))
         sig_figs = len(num_parts[1])
     return sig_figs
-
-def short_tests():
-    print("Precision Tests")
-    tests = [4.777776e-8, 4.777776e8, 4.777e8, 5.0, 5.123456789, 5,
-             5.123456789e-15, 5.4e4, 5.4e-8, 5.4e45]
-    for num in tests:
-        print(num, "->", convert(num, "meter", "meter"))
-    print("-" * 40, "\nConversion tests")
-    print(convert(373, "kelvin", "celsius"))
-    print(convert(373, "asdf", "celsius"))
-    print(convert(373, "meter", "celsius"))
-
-# short_tests()
