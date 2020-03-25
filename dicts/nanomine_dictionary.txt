@@ -1,6 +1,6 @@
 CharpyImpactEnergy=joulePerSquareMetre
 CrystalizationTemperature=CelsiusTemperature=Kelvin
-CurrentDensity=amperePerSquareMeter
+CurrentDensity=amperePerSquareMetre
 Density=gramPerCubicCentimetre=molePerCubicmetre
 Depth=nanometre
 ElectricConductivity=siemensPerMetre
