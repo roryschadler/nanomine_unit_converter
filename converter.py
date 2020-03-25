@@ -15,12 +15,12 @@ class UnitConverter(autonomic.UpdateChangeService):
     activity_class = whyis.UnitConverter
 
     def getInputClass(self):
-        # TODO could be anything sio:Entity
-        return URIRef("http://nanomine.org/ns/PolymerNanocomposite")
+        return sio.Entity
+        # return URIRef("http://nanomine.org/ns/PolymerNanocomposite")
 
     def getOutputClass(self):
-        # TODO StandardizedConversionEntity
-        return URIRef("http://nanomine.org/ns/PolymerNanocomposite")
+        return URIRef("StandardizedConversionEntity")
+        # return URIRef("http://nanomine.org/ns/PolymerNanocomposite")
 
     def get_query(self):
         # TODO may not need?
