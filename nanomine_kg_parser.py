@@ -1,4 +1,4 @@
-""" asdf"""
+""" Provides an interface for rdflib Resources for Nanomine unit converter."""
 
 import rdflib
 from rdflib.resource import Resource
@@ -6,10 +6,6 @@ from rdflib.resource import Resource
 import re
 
 sio = rdflib.Namespace("http://semanticscience.org/resource/")
-
-def get_meas_attrs(g):
-    """ Wrapper for getting objects of sio:hasAttribute."""
-    return g.objects(sio.hasAttribute)
 
 def measurement_attribute(unit_URI, new_value, unit_type):
     """ Creates a new sio:hasAttribute object."""
@@ -53,17 +49,3 @@ def attr_value(attr):
         return next(attr.objects(sio.hasValue)).value
     except StopIteration:
         return ""
-
-def add_new_meas(g, new_meas_list):
-    if isinstance(g, Resource):
-        graph = g._graph
-    else:
-        graph = g
-    for new_meas in new_meas_list:
-        graph.add(sio.hasAttribute, new_meas)
-        for p, o in new_meas.predicate_objects():
-            if isinstance(o, Resource):
-                graph.add((new_meas._identifier, p._identifier, o._identifier))
-            else:
-                graph.add((new_meas._identifier, p._identifier, o))
-

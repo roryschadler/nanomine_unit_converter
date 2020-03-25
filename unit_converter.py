@@ -4,13 +4,7 @@ from numbers import Real
 
 from .convert import convert_to_other_units, load_user_definitions
 from .dictionary import read_dictionary
-from .nanomine_kg_parser import (attr_value,
-                                attr_type,
-                                attr_type_URI,
-                                attr_unit,
-                                measurement_attribute,
-                                get_meas_attrs,
-                                add_new_meas)
+from .nanomine_kg_parser import *
 
 # dictionaries for conversion between units
 convertible_units = read_dictionary("agents/converter/ontology_dicts/nanomine_dictionary.txt")
@@ -20,15 +14,6 @@ unit_to_pint_dict = read_dictionary("agents/converter/ontology_dicts/old_unit_to
 # new dictionaries for unit conversion
 translations = read_dictionary("agents/converter/dicts/translations.txt")
 load_user_definitions("agents/converter/dicts/pint_defs.txt")
-
-def convert_and_add_measurements(kg):
-    """ Takes Nanomine KG sample and adds measurement conversions to all units.
-        Ignores attributes that are not in the list of convertible attributes
-        given in the config file.
-    """
-    attributes = get_meas_attrs(kg)
-    for attr in attributes:
-        add_new_meas(kg, calculate_converted_units(attr))
 
 def calculate_converted_units(attr):
     """ Calculate unit conversions if passed a convertible attribute."""
@@ -87,24 +72,3 @@ def om_unit_to_uri(unit):
             unit_URI = k
             break
     return base + unit_URI
-
-def main():
-    import rdflib
-    from rdflib.resource import Resource
-    totalgraph = rdflib.Graph()
-    mysample = rdflib.URIRef("http://myref.org/mysample")
-    nanopub = Resource(totalgraph, mysample)
-    # mymeas = rdflib.BNode()
-    val = rdflib.Literal(5)
-    unit = rdflib.URIRef("http://www.ontology-of-units-of-measure.org/resource/om-2/nanometre")
-    type = rdflib.URIRef("http://semanticscience.org/resource/Width")
-    mymeas = Resource(totalgraph, rdflib.BNode())
-    # g.add((mysample, rdflib.URIRef("http://semanticscience.org/resource/hasAttribute"), mymeas))
-    mymeas.add(rdflib.URIRef("http://semanticscience.org/resource/hasValue"), val)
-    mymeas.add(rdflib.URIRef("http://semanticscience.org/resource/hasUnit"), unit)
-    mymeas.add(rdflib.URIRef("http://www.w3.org/1999/02/22-rdf-syntax-ns#type"), type)
-    nanopub.add(rdflib.URIRef("http://semanticscience.org/resource/hasAttribute"), mymeas)
-    convert_and_add_measurements(nanopub)
-    print(nanopub.graph.serialize(format='xml'))
-
-# main()
