@@ -17,7 +17,8 @@ def convert_to_other_units(meas_unit, meas_val, new_units):
     for new_unit in new_units:
         if new_unit != meas_unit:
             new_value = convert(meas_val, meas_unit, new_unit)
-            converted.append((new_unit, new_value))
+            if new_value is not None:
+                converted.append((new_unit, new_value))
     return converted
 
 def convert(value, from_unit, to_unit):
@@ -29,8 +30,8 @@ def convert(value, from_unit, to_unit):
     try:
         converted = Q_(value, from_unit).to(to_unit)
     except UndefinedUnitError as exc:
-        print("One of the units ({},{})"\
-              " is not defined.".format(from_unit, to_unit))
+        # print("One of the units ({},{})"\
+        #       " is not defined.".format(from_unit, to_unit))
         return None
     except DimensionalityError as exc:
         #print("The attempted unit conversion from"\

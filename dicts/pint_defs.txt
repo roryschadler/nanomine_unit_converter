@@ -1,7 +1,7 @@
 joulePerSquareMetre = joule / metre ** 2
 CelsiusTemperature = celsius
 Kelvin = kelvin
-amperePerSquareMeter = ampere / metre ** 2
+amperePerSquareMetre = ampere / metre ** 2
 gramPerCubicCentimetre = gram / centimetre ** 3
 molePerCubicmetre = mole / metre ** 3
 siemensPerMetre = siemens / metre

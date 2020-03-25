@@ -7,9 +7,9 @@ from .dictionary import read_dictionary
 from .nanomine_kg_parser import *
 
 # dictionaries for conversion between units
-convertible_units = read_dictionary("agents/converter/ontology_dicts/nanomine_dictionary.txt")
-ontology_to_pint_dict = read_dictionary("agents/converter/ontology_dicts/ontology_units_to_pint_dictionary.txt")
-unit_to_pint_dict = read_dictionary("agents/converter/ontology_dicts/old_unit_to_pint.txt")
+unit_type_dict = read_dictionary("agents/converter/dicts/nanomine_dictionary.txt")
+# ontology_to_pint_dict = read_dictionary("agents/converter/ontology_dicts/ontology_units_to_pint_dictionary.txt")
+# unit_to_pint_dict = read_dictionary("agents/converter/ontology_dicts/old_unit_to_pint.txt")
 
 # new dictionaries for unit conversion
 translations = read_dictionary("agents/converter/dicts/translations.txt")
@@ -35,19 +35,22 @@ def calculate_converted_units(attr):
         possible_units = []
 
         # get pint-friendly unit names
-        for unit in convertible_units[meas_type]:
-            possible_units.append(ontology_to_pint_dict[unit][0])
-        if unit_URI in unit_to_pint_dict:
+        for unit in unit_type_dict[meas_type]:
+            possible_units.append(unit)
+            # possible_units.append(ontology_to_pint_dict[unit][0])
+        if unit_URI in translations:
             # unit URI is in old units (pre apr 2020)
-            meas_unit = unit_to_pint_dict[unit_URI][0]
-        elif unit_URI in ontology_to_pint_dict:
-            # unit URI is in OM (post apr 2020)
-            meas_unit = ontology_to_pint_dict[unit_URI][0]
+            # meas_unit = unit_to_pint_dict[unit_URI][0]
+            meas_unit = translations[unit_URI][0]
+        # elif unit_URI in ontology_to_pint_dict:
+        #     # unit URI is in OM (post apr 2020)
+        #     meas_unit = ontology_to_pint_dict[unit_URI][0]
         else:
             # unit is unrecognized
             # print("WARNING: unit {} not recognizable".format(unit_URI))
-            return []
-        
+            # return []
+            meas_unit = unit_URI
+
         # do all unit conversion, return list of attributes
         converted_meas_tuples = convert_to_other_units(meas_unit, meas_value,
                                                        possible_units)
@@ -62,13 +65,13 @@ def calculate_converted_units(attr):
 
 def is_a_convertible_unit_attr(attr):
     """ Returns true if attribute's type is in Nanomine dictionary"""
-    return attr_type(attr) in convertible_units
+    return attr_type(attr) in unit_type_dict
 
 def om_unit_to_uri(unit):
     """ Creates a URI for a given unit"""
     base = "http://www.ontology-of-units-of-measure.org/resource/om-2/"
-    for k, v in ontology_to_pint_dict.items():
-        if unit in v:
-            unit_URI = k
-            break
-    return base + unit_URI
+    # for k, v in ontology_to_pint_dict.items():
+    #     if unit in v:
+    #         unit_URI = k
+    #         break
+    return base + unit

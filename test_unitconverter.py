@@ -61,7 +61,7 @@ class UnitConverterAgentTestCase(AgentUnitTestCase):
       "@type": [ "http://nanomine.org/ns/CurrentDensity" ],
       "http://semanticscience.org/resource/hasUnit": [
         {
-          "@id": "http://nanomine.org/ns/unit/a-m-2",
+          "@id": "http://www.ontology-of-units-of-measure.org/resource/om-2/amperePerSquareMeter",
           "http://www.w3.org/2000/01/rdf-schema#label": [ {"@value": "A/m^2"} ]
         }
       ],
