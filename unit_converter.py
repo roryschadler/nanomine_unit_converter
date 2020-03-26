@@ -8,11 +8,8 @@ from .nanomine_kg_parser import *
 
 # dictionaries for conversion between units
 unit_type_dict = read_dictionary("agents/converter/dicts/nanomine_dictionary.txt")
-# ontology_to_pint_dict = read_dictionary("agents/converter/ontology_dicts/ontology_units_to_pint_dictionary.txt")
-# unit_to_pint_dict = read_dictionary("agents/converter/ontology_dicts/old_unit_to_pint.txt")
-
-# new dictionaries for unit conversion
 translations = read_dictionary("agents/converter/dicts/translations.txt")
+
 load_user_definitions("agents/converter/dicts/pint_defs.txt")
 
 def calculate_converted_units(attr):
@@ -30,25 +27,16 @@ def calculate_converted_units(attr):
             or unit_URI is None
             or meas_value is None
             or not isinstance(meas_value, Real)):
-            # if any data is empty, or the value is not a number
             return []
-        possible_units = []
 
         # get pint-friendly unit names
+        possible_units = []
         for unit in unit_type_dict[meas_type]:
             possible_units.append(unit)
-            # possible_units.append(ontology_to_pint_dict[unit][0])
+
         if unit_URI in translations:
-            # unit URI is in old units (pre apr 2020)
-            # meas_unit = unit_to_pint_dict[unit_URI][0]
             meas_unit = translations[unit_URI][0]
-        # elif unit_URI in ontology_to_pint_dict:
-        #     # unit URI is in OM (post apr 2020)
-        #     meas_unit = ontology_to_pint_dict[unit_URI][0]
         else:
-            # unit is unrecognized
-            # print("WARNING: unit {} not recognizable".format(unit_URI))
-            # return []
             meas_unit = unit_URI
 
         # do all unit conversion, return list of attributes
@@ -69,9 +57,4 @@ def is_a_convertible_unit_attr(attr):
 
 def om_unit_to_uri(unit):
     """ Creates a URI for a given unit"""
-    base = "http://www.ontology-of-units-of-measure.org/resource/om-2/"
-    # for k, v in ontology_to_pint_dict.items():
-    #     if unit in v:
-    #         unit_URI = k
-    #         break
-    return base + unit
+    return "http://www.ontology-of-units-of-measure.org/resource/om-2/" + unit
