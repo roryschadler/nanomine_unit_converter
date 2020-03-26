@@ -121,6 +121,46 @@ class UnitConverterAgentTestCase(AgentUnitTestCase):
 
         self.assertEquals(len(results), 0)
 
+    def test_scientific_notation_value(self):
+        np = nanopub.Nanopublication()
+        np.assertion.parse(data='''{
+  "@id": "http://example.com/converter_test",
+  "@type": [ "http://nanomine.org/ns/PolymerNanocomposite" ],
+  "http://semanticscience.org/resource/hasAttribute": [
+    {
+      "@id": "bnode:4",
+      "@type": "http://nanomine.org/ns/GlassTransitionTemperature",
+      "http://semanticscience.org/resource/hasUnit": [
+        {
+          "@id": "http://www.ontology-of-units-of-measure.org/resource/om-2/kelvin",
+          "http://www.w3.org/2000/01/rdf-schema#label": [ {"@value": "Kelvin"} ]
+        }
+      ],
+      "http://semanticscience.org/resource/hasValue": [ {"@value": 5.3345e-02} ]
+    }
+  ]
+}''', format="json-ld")
+        # print(np.serialize(format="trig"))
+        agent = converter.UnitConverter()
+
+        results = self.run_agent(agent, nanopublication=np)
+
+        self.assertEquals(len(results), 1)
+        contains_celsius = False
+        correct_celsius_value = False
+        conversion_count = 0
+        if len(results) > 0:
+            for attr in results[0].resource(URIRef("http://example.com/converter_test"))[sio.hasAttribute]:
+                conversion_count += 1
+                if attr[sio.hasUnit : om.degreeCelsius]:
+                    contains_celsius = True
+                    for val in attr[sio.hasValue]:
+                        if val == Literal(-273.0967):
+                            correct_celsius_value = True
+        self.assertEquals(conversion_count, 2)
+        self.assertTrue(contains_celsius)
+        self.assertTrue(correct_celsius_value)
+
     def test_bad_unit(self):
         np = nanopub.Nanopublication()
         np.assertion.parse(data='''{
