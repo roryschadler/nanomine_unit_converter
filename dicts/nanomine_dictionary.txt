@@ -1,5 +1,5 @@
 CharpyImpactEnergy=joulePerSquareMetre
-CrystalizationTemperature=CelsiusTemperature=Kelvin
+CrystalizationTemperature=degreeCelsius=kelvin
 CurrentDensity=amperePerSquareMetre
 Density=gramPerCubicCentimetre=molePerCubicmetre
 Depth=nanometre
@@ -10,14 +10,14 @@ FiberTensileElongation
 FiberTensileStrength=megapascal
 FlexuralModulus=gigapascal
 FlexuralStressAtBreak=megapascal
-GlassTransitionTemperature=CelsiusTemperature=Kelvin=FahrenheitTemperature
+GlassTransitionTemperature=degreeCelsius=kelvin=degreeFahrenheit
 HalflifeOfCrystallization=minute-Time
 HeatOfCrystallization=joulePerKilogram
 HeatOfFusion=joulePerKilogram
 IZOD_ImpactEnergy
 InterphaseThickness=nanometre
 Length=micrometre=nanometre
-MeltingTemperature=CelsiusTemperature=Kelvin
+MeltingTemperature=degreeCelsius=kelvin
 SpecificHeatCapacity_Cp=joulePerKelvinKilogram
 SpecificSurfaceArea squareMetrePerGram
 SurfaceResistivity=ohmMetre
@@ -25,7 +25,7 @@ TensileModulus=gigapascal=megapascal=kilopascal
 TensileStressAtBreak=gigapascal=megapascal=kilopascal
 TensileStressAtYield=megapascal
 ThermalConductivity=wattPerMetreKelvin
-ThermalDecompositionTemperature=CelsiusTemperature
+ThermalDecompositionTemperature=degreeCelsius=kelvin
 ThermalDiffusivity=squareMetrePerSecond-Time
 VolumeResistivity=ohmMetre
 Width=micrometre=nanometre=metre
