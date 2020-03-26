@@ -12,13 +12,16 @@ Q_ = ureg.Quantity
 def load_user_definitions(user_defs):
     ureg.load_definitions(user_defs)
 
-def convert_to_other_units(meas_unit, meas_val, new_units):
+def convert_to_other_units(from_unit, val, unit_list):
+    """ Takes a list of units and converts a value to all of them.
+        Returns a list of tuples containing the new unit and value.
+    """
     converted = []
-    for new_unit in new_units:
-        if new_unit != meas_unit:
-            new_value = convert(meas_val, meas_unit, new_unit)
+    for to_unit in unit_list:
+        if to_unit != from_unit:
+            new_value = convert(val, from_unit, to_unit)
             if new_value is not None:
-                converted.append((new_unit, new_value))
+                converted.append((to_unit, new_value))
     return converted
 
 def convert(value, from_unit, to_unit):
