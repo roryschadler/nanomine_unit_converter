@@ -40,16 +40,16 @@ class UnitConverterAgentTestCase(AgentUnitTestCase):
 
         self.assertEquals(len(results), 1)
         print(results[0].serialize(format="trig"))
-        contains_metre = False
-        correct_metre_value = False
+        contains_micrometre = False
+        correct_micrometre_value = False
         if len(results) > 0:
             for attr in results[0].resource(URIRef("http://example.com/converter_test"))[sio.hasAttribute]:
-                if attr[sio.hasUnit : om.metre]:
-                    contains_metre = True
-                    if attr[sio.hasValue : Literal(0.00000005)]:
-                        correct_metre_value = True
-        self.assertTrue(contains_metre)
-        self.assertTrue(correct_metre_value)
+                if attr[sio.hasUnit : om.micrometre]:
+                    contains_micrometre = True
+                    if attr[sio.hasValue : Literal(0.05)]:
+                        correct_micrometre_value = True
+        self.assertTrue(contains_micrometre)
+        self.assertTrue(correct_micrometre_value)
 
     def test_no_conversion(self):
         np = nanopub.Nanopublication()
