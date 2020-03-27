@@ -1,5 +1,8 @@
 """ Finds and converts measurements in the Nanomine knowledge graph."""
 
+import pkg_resources
+from contextlib import closing
+from io import StringIO
 from numbers import Real
 
 from .convert import convert_to_other_units, load_user_definitions
@@ -7,10 +10,16 @@ from .dictionary import read_dictionary
 from .nanomine_kg_parser import *
 
 # dictionaries for conversion between units
-unit_type_dict = read_dictionary("agents/converter/dicts/nanomine_dictionary.txt")
-translations = read_dictionary("agents/converter/dicts/translations.txt")
+unit_type_dict = read_dictionary("dicts/nanomine_dictionary.txt")
+translations = read_dictionary("dicts/translations.txt")
 
-load_user_definitions("agents/converter/dicts/pint_defs.txt")
+try:
+    with closing(pkg_resources.resource_stream(__name__, "dicts/pint_defs.txt")) as f:
+        rbytes = f.read()
+        load_user_definitions(StringIO(rbytes.decode('utf-8')))
+except Exception as e:
+    msg = getattr(e, 'message', '') or str(e)
+    raise ValueError("While opening {}\n{}".format(f, msg))
 
 def calculate_converted_units(attr):
     """ Calculate unit conversions if passed a convertible attribute."""
