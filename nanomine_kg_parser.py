@@ -1,15 +1,13 @@
 """ Provides an interface for rdflib Resources for Nanomine unit converter."""
 
 import rdflib
-from rdflib.resource import Resource
-
 import re
 
 sio = rdflib.Namespace("http://semanticscience.org/resource/")
 
 def measurement_attribute(unit_URI, new_value, unit_type):
     """ Creates a new sio:hasAttribute object."""
-    new_meas = Resource(rdflib.Graph(), rdflib.BNode())
+    new_meas = rdflib.resource.Resource(rdflib.Graph(), rdflib.BNode())
     new_meas.add(sio.hasUnit, rdflib.URIRef(unit_URI))
     new_meas.add(sio.hasValue, rdflib.Literal(new_value))
     new_meas.add(rdflib.RDF.type, unit_type)
