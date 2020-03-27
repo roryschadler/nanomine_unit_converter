@@ -39,6 +39,7 @@ class UnitConverterAgentTestCase(AgentUnitTestCase):
         results = self.run_agent(agent, nanopublication=np)
 
         self.assertEquals(len(results), 1)
+        print(results[0].serialize(format="trig"))
         contains_metre = False
         correct_metre_value = False
         if len(results) > 0:
