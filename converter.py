@@ -16,16 +16,11 @@ class UnitConverter(autonomic.UpdateChangeService):
 
     def getInputClass(self):
         return sio.Entity
-        # return URIRef("http://nanomine.org/ns/PolymerNanocomposite")
 
     def getOutputClass(self):
         return URIRef("StandardizedConversionEntity")
-        # return URIRef("http://nanomine.org/ns/PolymerNanocomposite")
 
     def get_query(self):
-        # TODO may not need?
-        # Add provenance from original property
-
         # This line should be added once ReportedProperty is added to the Knowledge Graph
         # FILTER EXISTS {{ ?a <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://nanomine.org/nm/ReportedProperty> }} .
         query = '''SELECT DISTINCT ?s WHERE {{
