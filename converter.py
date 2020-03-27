@@ -41,10 +41,11 @@ class UnitConverter(autonomic.UpdateChangeService):
             if is_a_convertible_unit_attr(attr):
                 converted.extend(calculate_converted_units(attr))
         for new_meas in converted:
+            o.add(prov.wasDerivedFrom, i.identifier)
             o.add(sio.hasAttribute, new_meas)
             new_meas_URI = new_meas._identifier
             for p_, o_ in new_meas.predicate_objects():
                 if isinstance(o_, Resource):
-                    o._graph.add((new_meas_URI, p_._identifier, o_._identifier))
+                    o._graph.add((new_meas_URI, p_.identifier, o_.identifier))
                 else:
-                    o._graph.add((new_meas_URI, p_._identifier, o_))
+                    o._graph.add((new_meas_URI, p_.identifier, o_))
