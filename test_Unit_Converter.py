@@ -1,3 +1,5 @@
+""" Provides a testing framework for the Unit Conversion agent."""
+
 import sys
 sys.path.append("/apps/whyis/agents")
 
@@ -39,7 +41,7 @@ class UnitConverterAgentTestCase(AgentUnitTestCase):
         results = self.run_agent(agent, nanopublication=np)
 
         self.assertEquals(len(results), 1)
-        print(results[0].serialize(format="trig"))
+        print("Printing agent results:\n", results[0].serialize(format="trig"), "\n")
         contains_micrometre = False
         correct_micrometre_value = False
         if len(results) > 0:
