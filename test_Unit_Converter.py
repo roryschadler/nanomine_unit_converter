@@ -41,7 +41,7 @@ class UnitConverterAgentTestCase(AgentUnitTestCase):
         results = self.run_agent(agent, nanopublication=np)
 
         self.assertEquals(len(results), 1)
-        print("Printing agent results:\n", results[0].serialize(format="trig"), "\n")
+        print("Printing agent results:\n\n", results[0].serialize(format="trig"), "\n")
         contains_micrometre = False
         correct_micrometre_value = False
         if len(results) > 0:
