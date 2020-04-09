@@ -47,3 +47,18 @@ def attr_value(attr):
         return next(attr.objects(sio.hasValue)).value
     except StopIteration:
         return ""
+
+def attr_preferred_units(attr):
+    """ asdf"""
+    pref_unit_query = '''SELECT ?prefUnit WHERE {
+    ?type <http://semanticscience.org/resource/hasPreferredUnit> ?prefUnit .
+}'''
+    pref_units = []
+    for ut in attr.objects(rdflib.RDF.type):
+        unittype = ut.identifier
+    for result in attr.graph.query(pref_unit_query, initBindings={"type":unittype}):
+        try:
+            pref_units.append(re.split("[/#]", result.prefUnit.value)[-1].strip())
+        except IndexError:
+            to_unit = temp
+    return pref_units

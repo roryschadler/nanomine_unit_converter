@@ -242,3 +242,43 @@ class UnitConverterAgentTestCase(AgentUnitTestCase):
         results = self.run_agent(agent, nanopublication=np)
 
         self.assertEquals(len(results), 0)
+
+    def test_preferred_unit(self):
+        np = nanopub.Nanopublication()
+        np.assertion.parse(data='''{
+  "@id": "http://example.com/converter_test",
+  "@type": [ "http://nanomine.org/ns/PolymerNanocomposite" ],
+  "http://semanticscience.org/resource/hasAttribute": [
+    {
+      "@id": "bnode:0",
+      "@type": [ "http://nanomine.org/ns/Width" ],
+      "http://semanticscience.org/resource/hasUnit": [
+        {
+          "@id": "http://nanomine.org/ns/unit/nm",
+          "http://www.w3.org/2000/01/rdf-schema#label": [ {"@value": "Nanometer"} ]
+        }
+      ],
+      "http://semanticscience.org/resource/hasValue": [ {"@value": 50} ]
+    }
+  ]
+        }''', format="json-ld")
+        np.assertion.parse(data='''{
+  "@id": "http://nanomine.org/ns/Width",
+  "http://semanticscience.org/resource/hasPreferredUnit": "http://www.ontology-of-units-of-measure.org/resource/om-2/micrometre"
+        }''', format="json-ld")
+        # print(np.serialize(format="trig"))
+        agent = converter.UnitConverter()
+
+        results = self.run_agent(agent, nanopublication=np)
+
+        self.assertEquals(len(results), 1)
+        contains_micrometre = False
+        correct_micrometre_value = False
+        if len(results) > 0:
+            for attr in results[0].resource(URIRef("http://example.com/converter_test"))[sio.hasAttribute]:
+                if attr[sio.hasUnit : om.micrometre]:
+                    contains_micrometre = True
+                    if attr[sio.hasValue : Literal(0.05)]:
+                        correct_micrometre_value = True
+        self.assertTrue(contains_micrometre)
+        self.assertTrue(correct_micrometre_value)

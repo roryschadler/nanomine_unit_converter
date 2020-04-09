@@ -21,7 +21,7 @@ except Exception as e:
     msg = getattr(e, 'message', '') or str(e)
     raise ValueError("While opening {}\n{}".format(f, msg))
 
-def calculate_converted_units(attr):
+def convert_attr_to_units(attr):
     """ Calculate unit conversions if passed a convertible attribute."""
     if not is_a_convertible_unit_attr(attr):
         return []
@@ -38,10 +38,12 @@ def calculate_converted_units(attr):
             or not isinstance(meas_value, Real)):
             return []
 
-        # get pint-friendly unit names
-        possible_units = []
-        for unit in unit_type_dict[meas_type]:
-            possible_units.append(unit)
+        # THIS WILL FUNCTION ONCE preferredUnit IS ADDED TO THE KG AND IS PASSED IN BY THE UNIT CONVERTER AGENT
+        to_units = attr_preferred_units(attr)
+        if not to_units:
+            # THIS SHOULD BE REMOVED ONCE preferredUnit IS ADDED TO THE KG
+            # get pint-friendly unit names
+            to_units = [un for un in unit_type_dict[meas_type]]
 
         if unit_URI in translations:
             meas_unit = translations[unit_URI][0]
@@ -50,7 +52,7 @@ def calculate_converted_units(attr):
 
         # do all unit conversion, return list of attributes
         converted_meas_tuples = convert_to_other_units(meas_unit, meas_value,
-                                                       possible_units)
+                                                       to_units)
         converted = []
         for new_unit, new_val in converted_meas_tuples:
             # if the conversion returned everything it was supposed to
