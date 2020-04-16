@@ -10,12 +10,12 @@ ureg = UnitRegistry()
 Q_ = ureg.Quantity
 
 def load_user_definitions(user_defs):
+    """ Allows the user to load their own unit definitions and aliases."""
     ureg.load_definitions(user_defs)
 
 def convert_to_other_units(from_unit, val, unit_list):
     """ Takes a list of units and converts a value to all of them.
-        Returns a list of tuples containing the new unit and value.
-    """
+        Returns a list of tuples containing the new unit and value."""
     converted = []
     for to_unit in unit_list:
         if to_unit != from_unit:
@@ -32,20 +32,14 @@ def convert(value, from_unit, to_unit):
     """
     try:
         converted = Q_(value, from_unit).to(to_unit)
-    except UndefinedUnitError as exc:
-        # print("One of the units ({},{})"\
-        #       " is not defined.".format(from_unit, to_unit))
-        return None
-    except DimensionalityError as exc:
-        #print("The attempted unit conversion from"\
-        #      " {} to {} is not possible.".format(from_unit, to_unit))
+    except (UndefinedUnitError, DimensionalityError):
         return None
     else:
-        converted_val = round_sig(converted.m,
-                                  number_of_significant_figures(value))
+        converted_val = round_sig(converted.m, number_of_significant_figures(value))
         return converted_val
 
 def round_sig(x, sig=2):
+    """ Rounds to the given number of significant digits, default of 2"""
     return round(x, sig-int(floor(log10(abs(x)))))
 
 def number_of_significant_figures(num):

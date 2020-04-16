@@ -63,7 +63,9 @@ def convert_attr_to_units(attr):
         return converted
 
 def is_a_convertible_unit_attr(attr):
-    """ Returns true if attribute's type is in Nanomine dictionary"""
+    """ Returns true if attribute's type is in Nanomine dictionary.
+        Possibly redundant if nanomine_kg_parser has been implemented
+        correctly, checking for allowed types as it goes."""
     return attr_type(attr) in unit_type_dict
 
 def om_unit_to_uri(unit):
