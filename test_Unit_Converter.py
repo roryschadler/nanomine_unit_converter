@@ -37,11 +37,11 @@ class UnitConverterAgentTestCase(AgentUnitTestCase):
         }''', format="json-ld")
         # print(np.serialize(format="trig"))
         agent = converter.UnitConverter()
-
         results = self.run_agent(agent, nanopublication=np)
 
         self.assertEquals(len(results), 1)
-        print("Printing agent results:\n\n", results[0].serialize(format="trig"), "\n")
+        # print("Printing agent results:\n\n", results[0].serialize(format="trig"), "\n")
+        
         contains_micrometre = False
         correct_micrometre_value = False
         if len(results) > 0:
@@ -50,6 +50,7 @@ class UnitConverterAgentTestCase(AgentUnitTestCase):
                     contains_micrometre = True
                     if attr[sio.hasValue : Literal(0.05)]:
                         correct_micrometre_value = True
+
         self.assertTrue(contains_micrometre)
         self.assertTrue(correct_micrometre_value)
 
@@ -74,7 +75,6 @@ class UnitConverterAgentTestCase(AgentUnitTestCase):
 }''', format="json-ld")
         # print(np.serialize(format="trig"))
         agent = converter.UnitConverter()
-
         results = self.run_agent(agent, nanopublication=np)
 
         self.assertEquals(len(results), 0)
@@ -100,7 +100,6 @@ class UnitConverterAgentTestCase(AgentUnitTestCase):
 }''', format="json-ld")
         # print(np.serialize(format="trig"))
         agent = converter.UnitConverter()
-
         results = self.run_agent(agent, nanopublication=np)
 
         self.assertEquals(len(results), 0)
@@ -119,7 +118,6 @@ class UnitConverterAgentTestCase(AgentUnitTestCase):
 }''', format="json-ld")
         # print(np.serialize(format="trig"))
         agent = converter.UnitConverter()
-
         results = self.run_agent(agent, nanopublication=np)
 
         self.assertEquals(len(results), 0)
@@ -145,10 +143,10 @@ class UnitConverterAgentTestCase(AgentUnitTestCase):
 }''', format="json-ld")
         # print(np.serialize(format="trig"))
         agent = converter.UnitConverter()
-
         results = self.run_agent(agent, nanopublication=np)
 
         self.assertEquals(len(results), 1)
+
         contains_celsius = False
         correct_celsius_value = False
         conversion_count = 0
@@ -160,6 +158,7 @@ class UnitConverterAgentTestCase(AgentUnitTestCase):
                     for val in attr[sio.hasValue]:
                         if val == Literal(-273.0967):
                             correct_celsius_value = True
+
         self.assertEquals(conversion_count, 2)
         self.assertTrue(contains_celsius)
         self.assertTrue(correct_celsius_value)
@@ -185,7 +184,6 @@ class UnitConverterAgentTestCase(AgentUnitTestCase):
 }''', format="json-ld")
         # print(np.serialize(format="trig"))
         agent = converter.UnitConverter()
-
         results = self.run_agent(agent, nanopublication=np)
 
         self.assertEquals(len(results), 0)
@@ -211,7 +209,6 @@ class UnitConverterAgentTestCase(AgentUnitTestCase):
 }''', format="json-ld")
         # print(np.serialize(format="trig"))
         agent = converter.UnitConverter()
-
         results = self.run_agent(agent, nanopublication=np)
 
         self.assertEquals(len(results), 0)
@@ -236,9 +233,9 @@ class UnitConverterAgentTestCase(AgentUnitTestCase):
   ]
 }
 ''', format="json-ld")
+        
         # print(np.serialize(format="trig"))
         agent = converter.UnitConverter()
-
         results = self.run_agent(agent, nanopublication=np)
 
         self.assertEquals(len(results), 0)
@@ -262,23 +259,28 @@ class UnitConverterAgentTestCase(AgentUnitTestCase):
     }
   ]
         }''', format="json-ld")
+
+        # Meters are not a default preferred unit for Width, so this will only
+        # pass if the unit converter correctly parses hasPreferredUnit
         np.assertion.parse(data='''{
   "@id": "http://nanomine.org/ns/Width",
-  "http://semanticscience.org/resource/hasPreferredUnit": "http://www.ontology-of-units-of-measure.org/resource/om-2/micrometre"
+  "http://semanticscience.org/resource/hasPreferredUnit": "http://www.ontology-of-units-of-measure.org/resource/om-2/metre"
         }''', format="json-ld")
+        
         # print(np.serialize(format="trig"))
         agent = converter.UnitConverter()
-
         results = self.run_agent(agent, nanopublication=np)
 
         self.assertEquals(len(results), 1)
-        contains_micrometre = False
-        correct_micrometre_value = False
+        
+        contains_metre = False
+        correct_metre_value = False
         if len(results) > 0:
             for attr in results[0].resource(URIRef("http://example.com/converter_test"))[sio.hasAttribute]:
-                if attr[sio.hasUnit : om.micrometre]:
-                    contains_micrometre = True
-                    if attr[sio.hasValue : Literal(0.05)]:
-                        correct_micrometre_value = True
-        self.assertTrue(contains_micrometre)
-        self.assertTrue(correct_micrometre_value)
+                if attr[sio.hasUnit : om.metre]:
+                    contains_metre = True
+                    if attr[sio.hasValue : Literal(0.00000005)]:
+                        correct_metre_value = True
+
+        self.assertTrue(contains_metre)
+        self.assertTrue(correct_metre_value)
