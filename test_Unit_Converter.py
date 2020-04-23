@@ -1,11 +1,8 @@
 """ Provides a testing framework for the Unit Conversion agent."""
 
-import sys
-sys.path.append("/apps/whyis/agents")
-
 from rdflib import *
 
-from converter import converter
+from nanomine_unit_converter import converter
 
 from whyis import nanopub
 
