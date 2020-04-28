@@ -23,7 +23,7 @@
   ```
 
 - In the nanomine-graph directory, add the unit converter agent to the list of inferencers in the config.py file:
-  * Add the following import line: `import path.to.nanomine_unit_converter.converter as converter`
+  * Add the following import line: `import nanomine_unit_converter.converter as converter`
   * Add the following line to the `inferencers` item in the `Config` dictionary constructor: `"UnitConverter": converter.UnitConverter()`
 
 - In your terminal, load the ontology and XML Ingest Semantic ETL file:
@@ -41,7 +41,7 @@
   python manage.py load -i </path/to/local_files.ttl> -f turtle
   ```
 
-- To test the unit converter, locate your nanomine_unit_converter installation, and run the following:
+- To test the unit converter, locate your `nanomine_unit_converter` installation, and run the following:
 ```
   cp ./test_Unit_Converter.py /apps/nanomine-graph/tests/test_nanomine_unit_converter.py
   cd /apps/whyis
