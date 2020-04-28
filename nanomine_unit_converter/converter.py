@@ -47,7 +47,7 @@ class UnitConverter(autonomic.UpdateChangeService):
                     o.graph.add((activity, prov.used, attr.identifier))
                     o.graph.add((activity, prov.generated, new_meas.identifier))
                     o.graph.add((activity, prov.atTime, Literal(util.date_time(t=time()))))
-                    o.graph.add((activity, prov.wasAssociatedWith, URIRef("http://nanomine.org/ns/UnitConverterV01")))
+                    o.graph.add((activity, prov.wasAssociatedWith, URIRef("http://nanomine.org/ns/UnitConverterV001")))
 
                     # Add all triples for the measurement
                     for p_, o_ in new_meas.predicate_objects():

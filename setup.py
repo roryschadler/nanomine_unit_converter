@@ -4,8 +4,8 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setuptools.setup(
-    name="nanomine-unit-converter-roryschadler",
-    version="0.1.1dev",
+    name="nanomine-unit-converter",
+    version="0.0.1",
     author="Rory Schadler",
     author_email="rory.h.schadler.21@dartmouth.edu",
     description="Unit converter for NanoMine Knowledge Graph",
