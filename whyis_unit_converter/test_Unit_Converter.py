@@ -2,7 +2,7 @@
 
 from rdflib import *
 
-from nanomine_unit_converter import converter
+from whyis_unit_converter import converter
 
 from whyis import nanopub
 

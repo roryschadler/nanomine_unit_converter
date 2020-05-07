@@ -4,18 +4,19 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setuptools.setup(
-    name="nanomine-unit-converter",
+    name="whyis-unit-converter",
     version="0.0.1",
     author="Rory Schadler",
     author_email="rory.h.schadler.21@dartmouth.edu",
-    description="Unit converter for NanoMine Knowledge Graph",
+    description="Unit converter for Whyis",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    url="https://github.com/roryschadler/nanomine_unit_converter",
-    packages=['nanomine_unit_converter'],
+    url="https://github.com/roryschadler/whyis_unit_converter",
+    packages=['whyis_unit_converter', 'bin'],
     include_package_data=True,
     install_requires=['pint',
                       'rdflib'],
+    scripts=['bin/unitconvertertest'],
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",

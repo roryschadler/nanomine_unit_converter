@@ -5,7 +5,6 @@ import re
 from .dictionary import read_dictionary
 
 sio = rdflib.Namespace("http://semanticscience.org/resource/")
-unit_type_dict = read_dictionary("dicts/nanomine_dictionary.txt")
 
 def measurement_attribute(unit_URI, new_value, unit_type):
     """ Creates a new sio:hasAttribute object."""
@@ -17,13 +16,9 @@ def measurement_attribute(unit_URI, new_value, unit_type):
     return new_meas
 
 def attr_type(attr):
-    """ Returns the slug of the URI for the object of RDF.type for the given subject.
-        Only returns the URI if it appears in the Nanomine dictionary of 
-        allowed types"""
+    """ Returns the slug of the URI for the object of RDF.type for the given subject."""
     try:
         temp = attr_type_URI(attr)
-        if temp is None:
-            return None
         type_slug = re.split("[/#]", temp)[-1].strip()
         return type_slug
     except IndexError:
@@ -37,20 +32,9 @@ def attr_type_URI(attr):
         allowed types"""
     try:
         type_URI = next(attr.objects(rdflib.RDF.type)).identifier
-        if _type_in_dict(type_URI):
-            return type_URI
-        else:
-            return None
+        return type_URI
     except StopIteration:
         return ""
-
-def _type_in_dict(type_URI_or_slug):
-    """ Checks to see if given URI/slug is in the Nanomine dictionary."""
-    try:
-        type_slug = re.split("[/#]", type_URI_or_slug)[-1].strip()
-    except IndexError:
-        type_slug = type_URI_or_slug
-    return type_slug in unit_type_dict
 
 def attr_unit(attr):
     """ Returns the slug of the URI for the object of sio.hasUnit for the given subject."""

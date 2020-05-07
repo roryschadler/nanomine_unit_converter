@@ -1,4 +1,4 @@
-""" Unit Conversion Agent for Nanomine Knowledge Graph
+""" Unit Conversion Agent for Whyis
     Uses <http://tetherless-world.github.io/whyis/inference>
     as a template.
 """
@@ -26,8 +26,6 @@ class UnitConverter(autonomic.UpdateChangeService):
         return URIRef("StandardizedConversionEntity")
 
     def get_query(self):
-        # This line should be added once ReportedProperty is added to the Knowledge Graph
-        # FILTER EXISTS {{ ?a <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> <http://nanomine.org/nm/ReportedProperty> }} .
         query = '''SELECT ?s WHERE {
     ?s <http://semanticscience.org/resource/hasAttribute> ?a . 
     ?a <http://semanticscience.org/resource/hasUnit> []; 
@@ -47,7 +45,7 @@ class UnitConverter(autonomic.UpdateChangeService):
                     o.graph.add((activity, prov.used, attr.identifier))
                     o.graph.add((activity, prov.generated, new_meas.identifier))
                     o.graph.add((activity, prov.atTime, Literal(util.date_time(t=time()))))
-                    o.graph.add((activity, prov.wasAssociatedWith, URIRef("http://nanomine.org/ns/UnitConverterV001")))
+                    o.graph.add((activity, prov.wasAssociatedWith, URIRef("http://nanomine.org/ns/WhyisUnitConverterV002")))
 
                     # Add all triples for the measurement
                     for p_, o_ in new_meas.predicate_objects():

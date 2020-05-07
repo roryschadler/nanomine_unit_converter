@@ -4,22 +4,32 @@ import pkg_resources
 from contextlib import closing
 from io import StringIO
 from numbers import Real
+import os
 
 from .convert import convert_to_other_units, load_user_definitions
 from .dictionary import read_dictionary
-from .nanomine_kg_parser import *
+from .kg_parser import *
 
 # dictionaries for conversion between units
-unit_type_dict = read_dictionary("dicts/nanomine_dictionary.txt")
-translations = read_dictionary("dicts/translations.txt")
+unit_type_dict = {}
+translations = {}
 
-try:
-    with closing(pkg_resources.resource_stream(__name__, "dicts/pint_defs.txt")) as f:
-        rbytes = f.read()
-        load_user_definitions(StringIO(rbytes.decode('utf-8')))
-except Exception as e:
-    msg = getattr(e, 'message', '') or str(e)
-    raise ValueError("While opening {}\n{}".format(f, msg))
+directory = os.fsencode("./dicts")
+for f in os.listdir(directory):
+    file_name = os.fsdecode(f)
+    new_dict, f_type = read_dictionary(file_name)
+    if f_type = "translation_file":
+        translations.update(new_dict)
+    else if f_type = "mapping_file":
+        unit_type_dict.update(new_dict)
+    else if f_type = "definitions_file":
+        try:
+            with closing(pkg_resources.resource_stream(__name__, file_name)) as f:
+                rbytes = f.read()
+                load_user_definitions(StringIO(rbytes.decode('utf-8')))
+        except Exception as e:
+            msg = getattr(e, 'message', '') or str(e)
+            raise ValueError("While opening {}\n{}".format(f, msg))
 
 def convert_attr_to_units(attr):
     """ Calculate unit conversions if passed a convertible attribute."""
@@ -38,11 +48,11 @@ def convert_attr_to_units(attr):
             or not isinstance(meas_value, Real)):
             return []
 
-        # THIS WILL FUNCTION ONCE preferredUnit IS ADDED TO THE KG AND IS PASSED IN BY THE UNIT CONVERTER AGENT
         to_units = attr_preferred_units(attr)
+
+        # if sio:hasPreferredUnit has not been implemented in this graph
         if not to_units:
-            # THIS SHOULD BE REMOVED ONCE preferredUnit IS ADDED TO THE KG
-            # get pint-friendly unit names
+            # get pint-friendly unit names from user-supplied dictionary
             to_units = [un for un in unit_type_dict[meas_type]]
 
         if unit_URI in translations:
@@ -64,10 +74,10 @@ def convert_attr_to_units(attr):
 
 def is_a_convertible_unit_attr(attr):
     """ Returns true if attribute's type is in Nanomine dictionary.
-        Possibly redundant if nanomine_kg_parser has been implemented
+        Possibly redundant if kg_parser has been implemented
         correctly, checking for allowed types as it goes."""
     return attr_type(attr) in unit_type_dict
 
 def om_unit_to_uri(unit):
-    """ Creates a URI for a given unit"""
+    """ Creates an OM URI for a given unit"""
     return "http://www.ontology-of-units-of-measure.org/resource/om-2/" + unit

@@ -1,4 +1,4 @@
-""" Reads and returns Nanomine Unit Dictionary."""
+""" Reads and returns Unit Dictionary."""
 import pkg_resources
 from contextlib import closing
 from io import StringIO
@@ -13,8 +13,11 @@ def read_dictionary(f):
             msg = getattr(e, 'message', '') or str(e)
             raise ValueError("While opening {}\n{}".format(f, msg))
     d = {}
+    file_type = ""
     for line in f:
+        if line[0] == "#":
+            file_type = line.strip(' #')
         items = line.strip().split('=')
         if len(items) >= 2:
             d[items[0]] = items[1:]
-    return d
+    return d, file_type
