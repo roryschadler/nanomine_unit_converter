@@ -13,7 +13,8 @@
 
 - Reload your knowledge graph to run the inferencer over it
 
-# Loading unit translation files
+# Loading unit definition and translation files
+- To load your own unit definition and translation files, run `importconverterdict FILES`
 - Your translation files can be in one of the following forms:
   * Unit definitions file. Used to translate compound units or units with non-standard spellings into understandable units. See [defining pint units](https://pint.readthedocs.io/en/0.11/defining.html) for more specific information about formatting.
   ```
@@ -29,6 +30,7 @@
   CharpyImpactEnergy=joulePerSquareMetre
   CrystalizationTemperature=kelvin
   ThermalDiffusivity=squareMetrePerSecond-Time
+  Width=nanometre
   ```
 
   * Translation file. Used to translate un-parsable URIs into understandable units. No slug or fragment may contain a dash "-" or slash "/", unless that slug is translated in the translation file. Translations to understandable units are written as below. See [defining pint units](https://pint.readthedocs.io/en/0.11/defining.html) for more specific information about formatting.
