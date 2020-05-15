@@ -16,8 +16,8 @@ def read_dictionary(f):
     file_type = ""
     for line in f:
         if line[0] == "#":
-            file_type = line.strip(' #')
+            file_type = line.strip().strip('#')
         items = line.strip().split('=')
         if len(items) >= 2:
-            d[items[0]] = items[1:]
+            d[items[0].strip()] = items[1:]
     return d, file_type

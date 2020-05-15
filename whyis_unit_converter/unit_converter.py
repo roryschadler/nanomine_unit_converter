@@ -13,16 +13,17 @@ from .kg_parser import *
 # dictionaries for conversion between units
 unit_type_dict = {}
 translations = {}
+resource_package = __name__
 
-directory = os.fsencode("./dicts")
+directory = os.fsencode(pkg_resources.resource_filename(resource_package, "dicts"))
 for f in os.listdir(directory):
-    file_name = os.fsdecode(f)
+    file_name = "dicts/" + os.fsdecode(f)
     new_dict, f_type = read_dictionary(file_name)
-    if f_type = "translation_file":
+    if f_type == "translation_file":
         translations.update(new_dict)
-    else if f_type = "mapping_file":
+    elif f_type == "mapping_file":
         unit_type_dict.update(new_dict)
-    else if f_type = "definitions_file":
+    elif f_type == "definitions_file":
         try:
             with closing(pkg_resources.resource_stream(__name__, file_name)) as f:
                 rbytes = f.read()

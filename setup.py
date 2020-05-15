@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="whyis-unit-converter",
-    version="0.0.1",
+    version="0.0.4",
     author="Rory Schadler",
     author_email="rory.h.schadler.21@dartmouth.edu",
     description="Unit converter for Whyis",
@@ -14,9 +14,9 @@ setuptools.setup(
     url="https://github.com/roryschadler/whyis_unit_converter",
     packages=['whyis_unit_converter', 'bin'],
     include_package_data=True,
-    install_requires=['pint',
+    install_requires=['Pint',
                       'rdflib'],
-    scripts=['bin/unitconvertertest'],
+    scripts=['bin/unitconvertertest', 'bin/importconverterdict'],
     classifiers=[
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
