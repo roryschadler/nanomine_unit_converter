@@ -38,28 +38,38 @@ def convert_attr_to_units(attr):
         return []
     else:
         # pull important values off attribute
-        meas_type = attr_type(attr)
-        meas_type_URI = attr_type_URI(attr)
+        # meas_type = attr_type(attr)
+        # meas_type_URI = attr_type_URI(attr)
+        meas_type = attr_type_URI(attr)
         unit_URI = attr_unit(attr)
         meas_value = attr_value(attr)
         if (meas_type is None
-            or meas_type_URI is None
+            #or meas_type_URI is None
             or unit_URI is None
             or meas_value is None
             or not isinstance(meas_value, Real)):
             return []
 
-        to_units = attr_preferred_units(attr)
+        to_units_URIs = attr_preferred_units(attr)
 
         # if sio:hasPreferredUnit has not been implemented in this graph
-        if not to_units:
+        if not to_units_URIs:
             # get pint-friendly unit names from user-supplied dictionary
             to_units = [un for un in unit_type_dict[meas_type]]
+        # if it has, translate to pint-friendly unit names
+        else:
+            to_units = []
+            for uri in to_units_URIs:
+                if uri in translations:
+                    to_units.append(translations[uri][0])
+                else:
+                    raise KeyError("The unit URI {} has not been translated. See README.md for instructions on how to translate units for the Whyis Unit Converter.".format(uri)))
 
         if unit_URI in translations:
             meas_unit = translations[unit_URI][0]
         else:
-            meas_unit = unit_URI
+            raise KeyError("The unit URI {} has not been translated. See README.md for instructions on how to translate units for the Whyis Unit Converter.".format(unit_URI))
+            # meas_unit = unit_URI
 
         # do all unit conversion, return list of attributes
         converted_meas_tuples = convert_to_other_units(meas_unit, meas_value,
@@ -74,7 +84,7 @@ def convert_attr_to_units(attr):
         return converted
 
 def is_a_convertible_unit_attr(attr):
-    """ Returns true if attribute's type is in Nanomine dictionary.
+    """ Returns true if attribute's type is in dictionary.
         Possibly redundant if kg_parser has been implemented
         correctly, checking for allowed types as it goes."""
     return attr_type(attr) in unit_type_dict

@@ -1,4 +1,4 @@
-""" Provides an interface for rdflib Resources for Nanomine unit converter."""
+""" Provides an interface for rdflib Resources for Whyis unit converter."""
 
 import rdflib
 import re
@@ -27,9 +27,7 @@ def attr_type(attr):
         return ""
 
 def attr_type_URI(attr):
-    """ Returns the raw URI for the object of RDF.type for the given subject.
-        Only returns the URI if it appears in the Nanomine dictionary of 
-        allowed types"""
+    """ Returns the raw URI for the object of RDF.type for the given subject."""
     try:
         type_URI = next(attr.objects(rdflib.RDF.type)).identifier
         return type_URI
@@ -40,9 +38,10 @@ def attr_unit(attr):
     """ Returns the slug of the URI for the object of sio.hasUnit for the given subject."""
     try:
         unit = next(attr.objects(sio.hasUnit)).identifier
-        return re.split("[/#]", unit)[-1].strip()
-    except IndexError:
         return unit
+#        return re.split("[/#]", unit)[-1].strip()
+#    except IndexError:
+#        return unit
     except StopIteration:
         return ""
 
@@ -66,8 +65,9 @@ def attr_preferred_units(attr):
         return []
 
     for result in attr.graph.query(pref_unit_query, initBindings={"type":ut_URI}):
-        try:
-            pref_units.append(re.split("[/#]", result.prefUnit.value)[-1].strip())
-        except IndexError:
-            pref_units.append(result.prefUnit.value)
+        pref_units.append(result.prefUnit.value)
+#        try:
+#            pref_units.append(re.split("[/#]", result.prefUnit.value)[-1].strip())
+#        except IndexError:
+#            pref_units.append(result.prefUnit.value)
     return pref_units
