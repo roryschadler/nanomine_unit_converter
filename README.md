@@ -20,14 +20,14 @@
 
   * URI to unit mapping file. Used to map measurement types to their preferred units, if sio:hasPreferredUnit is not used in your knowledge graph.
   ```
-  \#mapping_file
+  #mapping_file
   http://nanomine.org/ns/CharpyImpactEnergy=http://www.ontology-of-units-of-measure.org/resource/om-2/joulePerSquareMetre
   http://nanomine.org/ns/CrystalizationTemperature=http://www.ontology-of-units-of-measure.org/resource/om-2/kelvin
   ```
 
   * Translation file. Used to translate URIs into understandable units. Translations to understandable units are written as below. See [defining pint units](https://pint.readthedocs.io/en/0.11/defining.html) for more specific information about formatting.
   ```
-  \#translation_file
+  #translation_file
   http://www.ontology-of-units-of-measure.org/resource/om-2/degreeFahrenheit=5 / 9 * kelvin; offset: 233.15 + 200 / 9
   http://www.ontology-of-units-of-measure.org/resource/om-2/amperePerSquareMetre=ampere / meter ** 2
   http://nanomine.org/ns/unit/kpa=kilopascal
