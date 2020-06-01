@@ -1,6 +1,7 @@
 """ Finds and converts measurements in the Nanomine knowledge graph."""
 
 import pkg_resources
+import warnings
 from contextlib import closing
 from io import StringIO
 from numbers import Real
@@ -54,41 +55,41 @@ def convert_attr_to_units(attr):
 
         # if sio:hasPreferredUnit has not been implemented in this graph
         if not to_units_URIs:
-            # get pint-friendly unit names from user-supplied dictionary
-            to_units = [un for un in unit_type_dict[meas_type]]
-        # if it has, translate to pint-friendly unit names
-        else:
-            to_units = []
-            for uri in to_units_URIs:
-                if uri in translations:
-                    to_units.append(translations[uri][0])
-                else:
-                    raise KeyError("The unit URI {} has not been translated. See README.md for instructions on how to translate units for the Whyis Unit Converter.".format(uri)))
+            # get unit names from user-supplied dictionary
+            try:
+                to_units_URIs = [un for un in unit_type_dict[str(meas_type)]]
+            except KeyError:
+                warnings.warn("The unit type URI {} has not been translated. See README.md for instructions on how to translate unit types for the Whyis Unit Converter.".format(str(meas_type)))
+        # translate to pint-friendly unit names
+        to_units = []
+        for uri in to_units_URIs:
+            if str(uri) in translations:
+                to_units.append(translations[str(uri)][0])
+            else:
+                warnings.warn("The unit URI {} has not been translated. See README.md for instructions on how to translate units for the Whyis Unit Converter.".format(str(uri)))
 
-        if unit_URI in translations:
-            meas_unit = translations[unit_URI][0]
+        # translate measurement unit to pint-friendly name
+        if str(unit_URI) in translations:
+            meas_unit = translations[str(unit_URI)][0]
         else:
-            raise KeyError("The unit URI {} has not been translated. See README.md for instructions on how to translate units for the Whyis Unit Converter.".format(unit_URI))
-            # meas_unit = unit_URI
+            warnings.warn("The unit URI {} has not been translated. See README.md for instructions on how to translate units for the Whyis Unit Converter.".format(str(unit_URI)))
+            return []
 
         # do all unit conversion, return list of attributes
         converted_meas_tuples = convert_to_other_units(meas_unit, meas_value,
                                                        to_units)
         converted = []
-        for new_unit, new_val in converted_meas_tuples:
+        converted_tuples = zip(to_units_URIs, converted_meas_tuples)
+        for new_unit, (pint_unit, new_val) in converted_tuples:
             # if the conversion returned everything it was supposed to
-            if new_unit is not None and new_val is not None:
-                converted.append(measurement_attribute(om_unit_to_uri(new_unit),
+            if new_unit is not None and new_val is not None and pint_unit is not None:
+                converted.append(measurement_attribute(new_unit,
                                                    new_val,
-                                                   meas_type_URI))
+                                                   meas_type))
         return converted
 
 def is_a_convertible_unit_attr(attr):
     """ Returns true if attribute's type is in dictionary.
         Possibly redundant if kg_parser has been implemented
         correctly, checking for allowed types as it goes."""
-    return attr_type(attr) in unit_type_dict
-
-def om_unit_to_uri(unit):
-    """ Creates an OM URI for a given unit"""
-    return "http://www.ontology-of-units-of-measure.org/resource/om-2/" + unit
+    return str(attr_type_URI(attr)) in unit_type_dict
