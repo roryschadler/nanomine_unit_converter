@@ -1,4 +1,4 @@
-#definitions_file
+#l##definitions_file
 joulePerSquareMetre = joule / metre ** 2
 degreeCelsius = kelvin; offset: 273.15
 amperePerSquareMetre = ampere / metre ** 2
