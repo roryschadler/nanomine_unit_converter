@@ -1,6 +1,6 @@
 # Whyis-unit-converter
 
-# Installation
+## Installation
 - install [whyis](http://tetherless-world.github.io/whyis/install) using this command
   ```
   WHYIS_BRANCH=master bash < <(curl -skL https://raw.githubusercontent.com/tetherless-world/whyis/master/install.sh)
@@ -13,33 +13,26 @@
 
 - Reload your knowledge graph to run the inferencer over it
 
-# Loading unit definition and translation files
+
+## Loading unit definition and translation files
 - To load your own unit definition and translation files, run `importconverterdict FILES`
 - Your translation files can be in one of the following forms:
-  * Unit definitions file. Used to translate compound units or units with non-standard spellings into understandable units. See [defining pint units](https://pint.readthedocs.io/en/0.11/defining.html) for more specific information about formatting.
-  ```
-  #definitions_file
-  joulePerSquareMetre = joule / meter ** 2
-  metre = meter
-  degreeFahrenheit = 5 / 9 * kelvin; offset: 233.15 + 200 / 9
-  ```
 
   * URI to unit mapping file. Used to map measurement types to their preferred units, if sio:hasPreferredUnit is not used in your knowledge graph.
   ```
   #mapping_file
-  CharpyImpactEnergy=joulePerSquareMetre
-  CrystalizationTemperature=kelvin
-  ThermalDiffusivity=squareMetrePerSecond-Time
-  Width=nanometre
+  http://nanomine.org/ns/CharpyImpactEnergy=http://www.ontology-of-units-of-measure.org/resource/om-2/joulePerSquareMetre
+http://nanomine.org/ns/CrystalizationTemperature=http://www.ontology-of-units-of-measure.org/resource/om-2/kelvin
   ```
 
-  * Translation file. Used to translate un-parsable URIs into understandable units. No slug or fragment may contain a dash "-" or slash "/", unless that slug is translated in the translation file. Translations to understandable units are written as below. See [defining pint units](https://pint.readthedocs.io/en/0.11/defining.html) for more specific information about formatting.
+  * Translation file. Used to translate URIs into understandable units. Translations to understandable units are written as below. See [defining pint units](https://pint.readthedocs.io/en/0.11/defining.html) for more specific information about formatting.
   ```
   #translation_file
-  minute-Time = minute
-  w-mk = watts / meter / kelvin
-  mol-m-3 = mole / meter ** 3
+  http://www.ontology-of-units-of-measure.org/resource/om-2/degreeFahrenheit=5 / 9 * kelvin; offset: 233.15 + 200 / 9
+http://www.ontology-of-units-of-measure.org/resource/om-2/amperePerSquareMetre=ampere / meter ** 2
+  http://nanomine.org/ns/unit/kpa=kilopascal
   ```
 
-# Testing
+
+## Testing
 - To test the unit converter, run `unitconvertertest` from a pip enabled endpoint.
