@@ -85,5 +85,5 @@ def convert_attr_to_units(attr):
     for new_unit, (pint_unit, new_val) in converted_tuples:
         # if the conversion returned everything it was supposed to
         if new_unit is not None and new_val is not None and pint_unit is not None:
-            converted.append(measurement_attribute(new_unit, new_val, meas_type))
+            converted.append(measurement_attribute(new_unit, new_val, meas_type, attr.identifier))
     return converted
