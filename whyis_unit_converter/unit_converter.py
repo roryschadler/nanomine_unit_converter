@@ -35,61 +35,55 @@ for f in os.listdir(directory):
 
 def convert_attr_to_units(attr):
     """ Calculate unit conversions if passed a convertible attribute."""
-    if not is_a_convertible_unit_attr(attr):
-        return []
-    else:
-        # pull important values off attribute
-        # meas_type = attr_type(attr)
-        # meas_type_URI = attr_type_URI(attr)
-        meas_type = attr_type_URI(attr)
-        unit_URI = attr_unit(attr)
-        meas_value = attr_value(attr)
-        if (meas_type is None
-            #or meas_type_URI is None
-            or unit_URI is None
-            or meas_value is None
-            or not isinstance(meas_value, Real)):
-            return []
+    # pull important values off attribute
+    meas_type = attr_type_URI(attr)
+    unit_URI = attr_unit(attr)
+    meas_value = attr_value(attr)
+    if (meas_type is None
+        or unit_URI is None
+        or meas_value is None
+        or not isinstance(meas_value, Real)):
+        return None
 
-        to_units_URIs = attr_preferred_units(attr)
+    to_units_URIs = attr_preferred_units(attr)
 
-        # if sio:hasPreferredUnit has not been implemented in this graph
-        if not to_units_URIs:
-            # get unit names from user-supplied dictionary
+    if not to_units_URIs:
+        # get unit names from user-supplied dictionary if it exists
+        if unit_type_dict:
             try:
                 to_units_URIs = [un for un in unit_type_dict[str(meas_type)]]
             except KeyError:
                 warnings.warn("The unit type URI {} has not been translated. See README.md for instructions on how to translate unit types for the Whyis Unit Converter.".format(str(meas_type)))
-        # translate to pint-friendly unit names
-        to_units = []
-        for uri in to_units_URIs:
-            if str(uri) in translations:
-                to_units.append(translations[str(uri)][0])
-            else:
-                warnings.warn("The unit URI {} has not been translated. See README.md for instructions on how to translate units for the Whyis Unit Converter.".format(str(uri)))
-
-        # translate measurement unit to pint-friendly name
-        if str(unit_URI) in translations:
-            meas_unit = translations[str(unit_URI)][0]
+        # if there are no preferred units, don't convert
         else:
-            warnings.warn("The unit URI {} has not been translated. See README.md for instructions on how to translate units for the Whyis Unit Converter.".format(str(unit_URI)))
-            return []
+            return None
 
-        # do all unit conversion, return list of attributes
-        converted_meas_tuples = convert_to_other_units(meas_unit, meas_value,
-                                                       to_units)
-        converted = []
-        converted_tuples = zip(to_units_URIs, converted_meas_tuples)
-        for new_unit, (pint_unit, new_val) in converted_tuples:
-            # if the conversion returned everything it was supposed to
-            if new_unit is not None and new_val is not None and pint_unit is not None:
-                converted.append(measurement_attribute(new_unit,
-                                                   new_val,
-                                                   meas_type))
-        return converted
+    # translate to pint-friendly unit names
+    to_units = []
+    for uri in to_units_URIs:
+        if str(uri) in translations:
+            to_units.append(translations[str(uri)][0])
+        else:
+            warnings.warn("The unit URI {} has not been translated. See README.md for instructions on how to translate units for the Whyis Unit Converter.".format(str(uri)))
 
-def is_a_convertible_unit_attr(attr):
-    """ Returns true if attribute's type is in dictionary.
-        Possibly redundant if kg_parser has been implemented
-        correctly, checking for allowed types as it goes."""
-    return str(attr_type_URI(attr)) in unit_type_dict
+    # if no units could be translated, don't convert
+    if not to_units:
+        return None
+
+    # translate measurement unit to pint-friendly name
+    if str(unit_URI) in translations:
+        meas_unit = translations[str(unit_URI)][0]
+    else:
+        # if measurement unit couldn't be translated
+        warnings.warn("The unit URI {} has not been translated. See README.md for instructions on how to translate units for the Whyis Unit Converter.".format(str(unit_URI)))
+        return None
+
+    # do all unit conversion, return list of attributes
+    converted_meas_tuples = convert_to_other_units(meas_unit, meas_value, to_units)
+    converted = []
+    converted_tuples = zip(to_units_URIs, converted_meas_tuples)
+    for new_unit, (pint_unit, new_val) in converted_tuples:
+        # if the conversion returned everything it was supposed to
+        if new_unit is not None and new_val is not None and pint_unit is not None:
+            converted.append(measurement_attribute(new_unit, new_val, meas_type))
+    return converted

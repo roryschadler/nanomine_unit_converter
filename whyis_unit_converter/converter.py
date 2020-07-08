@@ -16,7 +16,7 @@ from whyis.namespace import sioc_types, sioc, sio, dc, prov, whyis
 
 from .unit_converter import convert_attr_to_units, is_a_convertible_unit_attr
 
-class UnitConverter(autonomic.UpdateChangeService):
+class UnitConverter(autonomic.GlobalChangeService):
     activity_class = whyis.UnitConverter
 
     def getInputClass(self):
@@ -35,8 +35,8 @@ class UnitConverter(autonomic.UpdateChangeService):
 
     def process(self, i, o):
         for attr in i.objects(sio.hasAttribute):
-            if is_a_convertible_unit_attr(attr):
-                converted = convert_attr_to_units(attr)
+            converted = convert_attr_to_units(attr)
+            if converted is not None:
                 activity = BNode()
                 for new_meas in converted:
                     # Add new measurement to graph, note provenance of new data
