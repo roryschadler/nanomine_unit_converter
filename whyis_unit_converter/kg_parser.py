@@ -39,9 +39,6 @@ def attr_unit(attr):
     try:
         unit = next(attr.objects(sio.hasUnit)).identifier
         return unit
-#        return re.split("[/#]", unit)[-1].strip()
-#    except IndexError:
-#        return unit
     except StopIteration:
         return ""
 
@@ -56,18 +53,14 @@ def attr_preferred_units(attr):
     """ Returns the given attribute's preferred units, if any.
         Expects well-formed attribute for querying."""
     pref_unit_query = '''SELECT ?prefUnit WHERE {
-    ?type <http://semanticscience.org/resource/hasPreferredUnit> ?prefUnit .
+    ?type <http://nanomine.org/ns/hasPreferredUnit> ?prefUnit .
 }'''
     pref_units = []
     ut_URI = attr_type_URI(attr)
-    
+
     if ut_URI is None:
         return []
 
     for result in attr.graph.query(pref_unit_query, initBindings={"type":ut_URI}):
         pref_units.append(result.prefUnit.value)
-#        try:
-#            pref_units.append(re.split("[/#]", result.prefUnit.value)[-1].strip())
-#        except IndexError:
-#            pref_units.append(result.prefUnit.value)
     return pref_units
