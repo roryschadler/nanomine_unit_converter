@@ -2,7 +2,7 @@
 
 from rdflib import *
 
-from whyis_unit_converter import converter
+from whyis_unit_converter import unit_converter_agent
 
 from whyis import nanopub
 
@@ -38,7 +38,7 @@ class UnitConverterAgentTestCase(AgentUnitTestCase):
 
         self.assertEquals(len(results), 1)
         # print("Printing agent results:\n\n", results[0].serialize(format="trig"), "\n")
-        
+
         contains_micrometre = False
         correct_micrometre_value = False
         if len(results) > 0:
@@ -189,7 +189,7 @@ class UnitConverterAgentTestCase(AgentUnitTestCase):
   ]
 }
 ''', format="json-ld")
-        
+
         # print(np.serialize(format="trig"))
         agent = converter.UnitConverter()
         results = self.run_agent(agent, nanopublication=np)
@@ -222,13 +222,13 @@ class UnitConverterAgentTestCase(AgentUnitTestCase):
   "@id": "http://nanomine.org/ns/Width",
   "http://semanticscience.org/resource/hasPreferredUnit": "http://www.ontology-of-units-of-measure.org/resource/om-2/metre"
         }''', format="json-ld")
-        
+
         # print(np.serialize(format="trig"))
         agent = converter.UnitConverter()
         results = self.run_agent(agent, nanopublication=np)
 
         self.assertEquals(len(results), 1)
-        
+
         contains_metre = False
         correct_metre_value = False
         if len(results) > 0:

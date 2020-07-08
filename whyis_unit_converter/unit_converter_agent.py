@@ -14,7 +14,7 @@ from whyis import autonomic
 from whyis import nanopub
 from whyis.namespace import sioc_types, sioc, sio, dc, prov, whyis
 
-from .unit_converter import convert_attr_to_units, is_a_convertible_unit_attr
+from .attr_converter import convert_attr_to_units, is_a_convertible_unit_attr
 
 class UnitConverter(autonomic.GlobalChangeService):
     activity_class = whyis.UnitConverter
@@ -27,8 +27,8 @@ class UnitConverter(autonomic.GlobalChangeService):
 
     def get_query(self):
         query = '''SELECT ?s WHERE {
-    ?s <http://semanticscience.org/resource/hasAttribute> ?a . 
-    ?a <http://semanticscience.org/resource/hasUnit> []; 
+    ?s <http://semanticscience.org/resource/hasAttribute> ?a .
+    ?a <http://semanticscience.org/resource/hasUnit> [];
        <http://semanticscience.org/resource/hasValue> [] .
 }'''
         return query

@@ -7,8 +7,8 @@ from io import StringIO
 from numbers import Real
 import os
 
-from .convert import convert_to_other_units, load_user_definitions
-from .dictionary import read_dictionary
+from .convert_values import convert_to_other_units, load_user_definitions
+from .read_dictionary import read_dictionary
 from .kg_parser import *
 
 # dictionaries for conversion between units

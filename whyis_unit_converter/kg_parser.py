@@ -2,7 +2,6 @@
 
 import rdflib
 import re
-from .dictionary import read_dictionary
 
 sio = rdflib.Namespace("http://semanticscience.org/resource/")
 
