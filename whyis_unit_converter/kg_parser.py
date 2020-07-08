@@ -3,15 +3,16 @@
 import rdflib
 import re
 
-sio = rdflib.Namespace("http://semanticscience.org/resource/")
+from whyis.namespace import sio, prov
 
-def measurement_attribute(unit_URI, new_value, unit_type):
+def measurement_attribute(unit_URI, new_value, unit_type, old_attr_uri):
     """ Creates a new sio:hasAttribute object."""
     new_meas = rdflib.resource.Resource(rdflib.Graph(), rdflib.BNode())
     new_meas.add(sio.hasUnit, rdflib.URIRef(unit_URI))
     new_meas.add(sio.hasValue, rdflib.Literal(new_value))
     new_meas.add(rdflib.RDF.type, unit_type)
     new_meas.add(rdflib.RDF.type, rdflib.URIRef("http://nanomine.org/nm/ConvertedUnit"))
+    new_meas.add(prov.wasDerivedFrom, old_attr_uri)
     return new_meas
 
 def attr_type(attr):
