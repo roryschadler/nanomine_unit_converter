@@ -2,7 +2,7 @@
 
 from rdflib import *
 
-from whyis_unit_converter import unit_converter_agent
+from whyis_unit_converter import unit_converter_agent as converter
 
 from whyis import nanopub
 
@@ -32,6 +32,11 @@ class UnitConverterAgentTestCase(AgentUnitTestCase):
     }
   ]
         }''', format="json-ld")
+        np.assertion.parse(data='''{
+  "@id": "http://nanomine.org/ns/Width",
+  "http://nanomine.org/ns/hasPreferredUnit": "http://www.ontology-of-units-of-measure.org/resource/om-2/micrometre"
+        }''', format="json-ld")
+
         # print(np.serialize(format="trig"))
         agent = converter.UnitConverter()
         results = self.run_agent(agent, nanopublication=np)
@@ -216,11 +221,10 @@ class UnitConverterAgentTestCase(AgentUnitTestCase):
   ]
         }''', format="json-ld")
 
-        # Meters are not a default preferred unit for Width, so this will only
-        # pass if the unit converter correctly parses hasPreferredUnit
+        # This will only pass if the unit converter correctly parses hasPreferredUnit
         np.assertion.parse(data='''{
   "@id": "http://nanomine.org/ns/Width",
-  "http://semanticscience.org/resource/hasPreferredUnit": "http://www.ontology-of-units-of-measure.org/resource/om-2/metre"
+  "http://nanomine.org/ns/hasPreferredUnit": "http://www.ontology-of-units-of-measure.org/resource/om-2/metre"
         }''', format="json-ld")
 
         # print(np.serialize(format="trig"))
