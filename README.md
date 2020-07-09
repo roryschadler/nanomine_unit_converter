@@ -18,7 +18,7 @@
 - To load your own unit definition and translation files, run `importconverterdict FILES`
 - Your translation files can be in one of the following forms:
 
-  * URI to unit mapping file. Used to map measurement types to their preferred units, if sio:hasPreferredUnit is not used in your knowledge graph.
+  * URI to unit mapping file. Used to map measurement types to their preferred units, if http://nanomine.org/ns/hasPreferredUnit is not used in your knowledge graph.
   ```
   #mapping_file
   http://nanomine.org/ns/CharpyImpactEnergy=http://www.ontology-of-units-of-measure.org/resource/om-2/joulePerSquareMetre
