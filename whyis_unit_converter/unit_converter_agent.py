@@ -26,8 +26,8 @@ class UnitConverter(autonomic.GlobalChangeService):
         return URIRef("StandardizedConversionEntity")
 
     def get_query(self):
-        query = '''SELECT ?attr WHERE {
-    [] <http://semanticscience.org/resource/hasAttribute> ?attr.
+        query = '''SELECT ?s WHERE {
+    ?s <http://semanticscience.org/resource/hasAttribute> ?attr.
     ?attr <http://semanticscience.org/resource/hasUnit> [];
           <http://semanticscience.org/resource/hasValue> [];
           a [ <http://nanomine.org/ns/hasPreferredUnit> ?prefUnit ].
@@ -39,23 +39,22 @@ class UnitConverter(autonomic.GlobalChangeService):
         return query
 
     def process(self, i, o):
-        # for attr in i.objects(sio.hasAttribute):
-        attr = i
-        converted = convert_attr_to_units(attr)
-        if converted is not None:
-            activity = BNode()
-            for new_meas in converted:
-                # Add new measurement to graph, note provenance of new data
-                o.add(sio.hasAttribute, new_meas)
-                o.graph.add((new_meas.identifier, prov.wasGeneratedBy, activity))
-                o.graph.add((activity, prov.used, attr.identifier))
-                o.graph.add((activity, prov.generated, new_meas.identifier))
-                o.graph.add((activity, prov.atTime, Literal(util.date_time(t=time()))))
-                o.graph.add((activity, prov.wasAssociatedWith, URIRef("http://nanomine.org/ns/WhyisUnitConverterV001")))
+        for attr in i.objects(sio.hasAttribute):
+            converted = convert_attr_to_units(attr)
+            if converted is not None:
+                activity = BNode()
+                for new_meas in converted:
+                    # Add new measurement to graph, note provenance of new data
+                    o.add(sio.hasAttribute, new_meas)
+                    o.graph.add((new_meas.identifier, prov.wasGeneratedBy, activity))
+                    o.graph.add((activity, prov.used, attr.identifier))
+                    o.graph.add((activity, prov.generated, new_meas.identifier))
+                    o.graph.add((activity, prov.atTime, Literal(util.date_time(t=time()))))
+                    o.graph.add((activity, prov.wasAssociatedWith, URIRef("http://nanomine.org/ns/WhyisUnitConverterV001")))
 
-                # Add all triples for the measurement
-                for p_, o_ in new_meas.predicate_objects():
-                    if isinstance(o_, Resource):
-                        o.graph.add((new_meas.identifier, p_.identifier, o_.identifier))
-                    else:
-                        o.graph.add((new_meas.identifier, p_.identifier, o_))
+                    # Add all triples for the measurement
+                    for p_, o_ in new_meas.predicate_objects():
+                        if isinstance(o_, Resource):
+                            o.graph.add((new_meas.identifier, p_.identifier, o_.identifier))
+                        else:
+                            o.graph.add((new_meas.identifier, p_.identifier, o_))
