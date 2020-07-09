@@ -249,7 +249,7 @@ class UnitConverterAgentTestCase(AgentUnitTestCase):
       "@type": [ "http://nanomine.org/ns/Width" ],
       "http://semanticscience.org/resource/hasUnit": [
         {
-          "@id": "http://www.ontology-of-units-of-measure.org/resource/om-2/micrometre",
+          "@id": "http://www.ontology-of-units-of-measure.org/resource/om-2/micrometre"
         }
       ],
       "http://semanticscience.org/resource/hasValue": [ {"@value": 0.05} ],
