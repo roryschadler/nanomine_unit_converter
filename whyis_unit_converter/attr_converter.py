@@ -35,6 +35,9 @@ for f in os.listdir(directory):
 
 def convert_attr_to_units(attr):
     """ Calculate unit conversions if passed a convertible attribute."""
+    # check if attribute has been processed before
+    if attr_already_processed(attr):
+        return None
     # pull important values off attribute
     meas_type = attr_type_URI(attr)
     unit_URI = attr_unit(attr)

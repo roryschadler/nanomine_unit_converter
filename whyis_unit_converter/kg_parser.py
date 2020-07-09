@@ -64,3 +64,16 @@ def attr_preferred_units(attr):
     for result in attr.graph.query(pref_unit_query, initBindings={"type":ut_URI}):
         pref_units.append(result.prefUnit.value)
     return pref_units
+
+def attr_already_processed(attr):
+    """ Returns True if the attribute has been processed before.
+        This is determined by the existence of the graph pattern
+        below."""
+    query = '''ASK {
+    [] <http://www.w3.org/ns/prov#wasDerivedFrom> ?attr;
+       <http://semanticscience.org/resource/hasUnit> ?prefUnit.
+}'''
+    attr_URI = attr.identifier
+    # Result evaluates to True if the preceding graph pattern has a solution
+    result = attr.graph.query(query, initBindings={"attr":attr_URI})
+    return bool(result)

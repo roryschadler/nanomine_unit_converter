@@ -31,10 +31,6 @@ class UnitConverter(autonomic.GlobalChangeService):
     ?attr <http://semanticscience.org/resource/hasUnit> [];
           <http://semanticscience.org/resource/hasValue> [];
           a [ <http://nanomine.org/ns/hasPreferredUnit> ?prefUnit ].
-    FILTER NOT EXISTS {
-     [] <http://www.w3.org/ns/prov#wasDerivedFrom> ?attr;
-        <http://semanticscience.org/resource/hasUnit> ?prefUnit.
-   }
 }'''
         return query
 
