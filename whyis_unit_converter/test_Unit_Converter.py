@@ -201,7 +201,7 @@ class UnitConverterAgentTestCase(AgentUnitTestCase):
 
         self.assertEquals(len(results), 0)
 
-    def test_preferred_unit(self):
+    def test_lack_of_preferred_unit(self):
         np = nanopub.Nanopublication()
         np.assertion.parse(data='''{
   "@id": "http://example.com/converter_test",
@@ -221,26 +221,48 @@ class UnitConverterAgentTestCase(AgentUnitTestCase):
   ]
         }''', format="json-ld")
 
-        # This will only pass if the unit converter correctly parses hasPreferredUnit
-        np.assertion.parse(data='''{
-  "@id": "http://nanomine.org/ns/Width",
-  "http://nanomine.org/ns/hasPreferredUnit": "http://www.ontology-of-units-of-measure.org/resource/om-2/metre"
-        }''', format="json-ld")
-
         # print(np.serialize(format="trig"))
         agent = converter.UnitConverter()
         results = self.run_agent(agent, nanopublication=np)
 
-        self.assertEquals(len(results), 1)
+        self.assertEquals(len(results), 0)
 
-        contains_metre = False
-        correct_metre_value = False
-        if len(results) > 0:
-            for attr in results[0].resource(URIRef("http://example.com/converter_test"))[sio.hasAttribute]:
-                if attr[sio.hasUnit : om.metre]:
-                    contains_metre = True
-                    if attr[sio.hasValue : Literal(0.00000005)]:
-                        correct_metre_value = True
+    def test_already_converted(self):
+        np = nanopub.Nanopublication()
+        np.assertion.parse(data='''{
+  "@id": "http://example.com/converter_test",
+  "@type": [ "http://nanomine.org/ns/PolymerNanocomposite" ],
+  "http://semanticscience.org/resource/hasAttribute": [
+    {
+      "@id": "bnode:0",
+      "@type": [ "http://nanomine.org/ns/Width" ],
+      "http://semanticscience.org/resource/hasUnit": [
+        {
+          "@id": "http://nanomine.org/ns/unit/nm",
+          "http://www.w3.org/2000/01/rdf-schema#label": [ {"@value": "Nanometer"} ]
+        }
+      ],
+      "http://semanticscience.org/resource/hasValue": [ {"@value": 50} ]
+    },
+    {
+      "@id": "bnode:1",
+      "@type": [ "http://nanomine.org/ns/Width" ],
+      "http://semanticscience.org/resource/hasUnit": [
+        {
+          "@id": "http://www.ontology-of-units-of-measure.org/resource/om-2/micrometre",
+        }
+      ],
+      "http://semanticscience.org/resource/hasValue": [ {"@value": 0.05} ],
+      "http://www.w3.org/ns/prov#wasDerivedFrom": [ {"@id": "bnode:0"} ]
+    }
+  ]
+        }''', format="json-ld")
+        np.assertion.parse(data='''{
+  "@id": "http://nanomine.org/ns/Width",
+  "http://nanomine.org/ns/hasPreferredUnit": "http://www.ontology-of-units-of-measure.org/resource/om-2/micrometre"
+        }''', format="json-ld")
+        # print(np.serialize(format="trig"))
+        agent = converter.UnitConverter()
+        results = self.run_agent(agent, nanopublication=np)
 
-        self.assertTrue(contains_metre)
-        self.assertTrue(correct_metre_value)
+        self.assertEquals(len(results), 0)
