@@ -14,7 +14,7 @@ from whyis import autonomic
 from whyis import nanopub
 from whyis.namespace import sioc_types, sioc, sio, dc, prov, whyis
 
-from .attr_converter import convert_attr_to_units, is_a_convertible_unit_attr
+from .attr_converter import convert_attr_to_units
 
 class UnitConverter(autonomic.GlobalChangeService):
     activity_class = whyis.UnitConverter
