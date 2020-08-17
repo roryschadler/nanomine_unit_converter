@@ -8,7 +8,7 @@
 - whyis will be installed in /apps/whyis
 
 - In your knowledge graph directory, add the unit converter agent to the list of inferencers in your config.py file:
-  * Add the following import line: `import whyis_unit_converter.converter as converter`
+  * Add the following import line: `import whyis_unit_converter.unit_converter_agent as converter`
   * Add the following line to the `inferencers` item in the `Config` dictionary constructor: `"UnitConverter": converter.UnitConverter()`
 
 - Reload your knowledge graph to run the inferencer over it
