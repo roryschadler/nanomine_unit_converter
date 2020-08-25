@@ -17,7 +17,7 @@ from whyis.namespace import sioc_types, sioc, sio, dc, prov, whyis
 from .attr_converter import convert_attr_to_units
 
 class UnitConverter(autonomic.GlobalChangeService):
-    activity_class = whyis.UnitConverter
+    activity_class = URIRef("http://nanomine.org/ns/WhyisUnitConverterV001")
 
     def getInputClass(self):
         return sio.Entity
@@ -40,13 +40,14 @@ class UnitConverter(autonomic.GlobalChangeService):
             if converted is not None:
                 activity = BNode()
                 for new_meas in converted:
-                    # Add new measurement to graph, note provenance of new data
+                    # Add new measurement to graph
                     o.add(sio.hasAttribute, new_meas)
-                    o.graph.add((new_meas.identifier, prov.wasGeneratedBy, activity))
-                    o.graph.add((activity, prov.used, attr.identifier))
-                    o.graph.add((activity, prov.generated, new_meas.identifier))
-                    o.graph.add((activity, prov.atTime, Literal(util.date_time(t=time()))))
-                    o.graph.add((activity, prov.wasAssociatedWith, URIRef("http://nanomine.org/ns/WhyisUnitConverterV001")))
+                    # note provenance of new data--SUPERSEDED by superclass's explain() function
+                    # o.graph.add((new_meas.identifier, prov.wasGeneratedBy, activity))
+                    # o.graph.add((activity, prov.used, attr.identifier))
+                    # o.graph.add((activity, prov.generated, new_meas.identifier))
+                    # o.graph.add((activity, prov.atTime, Literal(util.date_time(t=time()))))
+                    # o.graph.add((activity, prov.wasAssociatedWith, URIRef("http://nanomine.org/ns/WhyisUnitConverterV001")))
 
                     # Add all triples for the measurement
                     for p_, o_ in new_meas.predicate_objects():
