@@ -17,7 +17,7 @@ from whyis.namespace import sioc_types, sioc, sio, dc, prov, whyis
 from .attr_converter import convert_attr_to_units
 
 class UnitConverter(autonomic.GlobalChangeService):
-    activity_class = URIRef("http://nanomine.org/ns/WhyisUnitConverterV001")
+    activity_class = URIRef("http://nanomine.org/ns/WhyisUnitConverterV002")
 
     def getInputClass(self):
         return sio.Entity
@@ -47,7 +47,7 @@ class UnitConverter(autonomic.GlobalChangeService):
                     # o.graph.add((activity, prov.used, attr.identifier))
                     # o.graph.add((activity, prov.generated, new_meas.identifier))
                     # o.graph.add((activity, prov.atTime, Literal(util.date_time(t=time()))))
-                    # o.graph.add((activity, prov.wasAssociatedWith, URIRef("http://nanomine.org/ns/WhyisUnitConverterV001")))
+                    # o.graph.add((activity, prov.wasAssociatedWith, URIRef("http://nanomine.org/ns/WhyisUnitConverterV002")))
 
                     # Add all triples for the measurement
                     for p_, o_ in new_meas.predicate_objects():

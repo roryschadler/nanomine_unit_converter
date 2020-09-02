@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="whyis-unit-converter",
-    version="0.0.1c",
+    version="0.0.2",
     author="Rory Schadler",
     author_email="rory.h.schadler.21@dartmouth.edu",
     description="Unit converter for Whyis",
