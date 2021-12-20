@@ -37,7 +37,7 @@ class UnitConverter(autonomic.GlobalChangeService):
     def process(self, i, o):
         for attr in i.objects(sio.hasAttribute):
             converted = convert_attr_to_units(attr)
-            if converted is not None:
+            if converted:
                 activity = BNode()
                 for new_meas in converted:
                     # Add new measurement to graph

@@ -43,13 +43,11 @@ def convert_attr_to_units(attr):
     meas_type = attr_type_URI(attr)
     unit_URI = attr_unit(attr)
     meas_value = attr_value(attr)
-    if (meas_type is None
-        or unit_URI is None
-        or meas_value is None
-        or not isinstance(meas_value, Real)):
+    if (not (meas_type
+             and unit_URI
+             and meas_value
+             and isinstance(meas_value, Real))):
         return None
-
-    to_units_URIs = attr_preferred_units(attr)
 
     if not to_units_URIs:
         # get unit names from user-supplied dictionary if it exists
@@ -88,6 +86,6 @@ def convert_attr_to_units(attr):
     converted_tuples = zip(to_units_URIs, converted_meas_tuples)
     for new_unit, (pint_unit, new_val) in converted_tuples:
         # if the conversion returned everything it was supposed to
-        if new_unit is not None and new_val is not None and pint_unit is not None:
+        if new_unit and new_val and pint_unit:
             converted.append(measurement_attribute(new_unit, new_val, meas_type, attr.identifier))
     return converted

@@ -20,7 +20,7 @@ def convert_to_other_units(from_unit, val, unit_list):
     for to_unit in unit_list:
         if to_unit != from_unit:
             new_value = convert(val, from_unit, to_unit)
-            if new_value is not None:
+            if new_value:
                 converted.append((to_unit, new_value))
     return converted
 

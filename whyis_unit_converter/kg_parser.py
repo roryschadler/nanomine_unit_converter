@@ -58,7 +58,7 @@ def attr_preferred_units(attr):
     pref_units = []
     ut_URI = attr_type_URI(attr)
 
-    if ut_URI is None:
+    if not ut_URI:
         return []
 
     for result in attr.graph.query(pref_unit_query, initBindings={"type":ut_URI}):
