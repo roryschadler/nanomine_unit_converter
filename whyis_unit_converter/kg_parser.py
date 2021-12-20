@@ -65,15 +65,20 @@ def attr_preferred_units(attr):
         pref_units.append(result.prefUnit.value)
     return pref_units
 
-def attr_already_processed(attr):
-    """ Returns True if the attribute has been processed before.
-        This is determined by the existence of the graph pattern
-        below."""
-    query = '''ASK {
+def attr_incomplete_preferred_units(attr):
+    """ Returns the given attribute's incomplete preferred units, if any.
+        Expects well-formed attribute for querying."""
+    has_derived_attr_with_pref_unit_query = '''ASK {
     [] <http://www.w3.org/ns/prov#wasDerivedFrom> ?attr;
        <http://semanticscience.org/resource/hasUnit> ?prefUnit.
 }'''
     attr_URI = attr.identifier
-    # Result evaluates to True if the preceding graph pattern has a solution
-    result = attr.graph.query(query, initBindings={"attr":attr_URI})
-    return bool(result)
+    preferred_unit_URI_list = attr_preferred_units(attr)
+    incomplete_preferred_units = []
+    # query result evaluates to True if the given graph pattern has a solution
+    for preferred_unit_URI in preferred_unit_URI_list:
+        initBindings = {"attr": attr_URI, "prefUnit": rdflib.URIRef(preferred_unit_URI)}
+        # if attr has no derived attribute in this preferred unit
+        if not bool(attr.graph.query(has_derived_attr_with_pref_unit_query, initBindings=initBindings)):
+            incomplete_preferred_units.append(preferred_unit_URI)
+    return incomplete_preferred_units
